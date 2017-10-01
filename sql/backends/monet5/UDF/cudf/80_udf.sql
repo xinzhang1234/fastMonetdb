@@ -23,3 +23,9 @@ returns integer external name udf.fuse;
 -- fuse two (4-byte) integer values into one (8-byte) bigint value
 create function fuse(one integer, two integer)
 returns bigint external name udf.fuse;
+
+create function pcre_match(s string, pattern string)
+returns BOOLEAN external name pcre.match;
+
+create function pcre_imatch(s string, pattern string)
+returns BOOLEAN external name pcre.imatch;

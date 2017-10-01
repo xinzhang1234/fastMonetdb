@@ -1737,6 +1737,7 @@ sqltypeinit( sql_allocator *sa)
 		sql_create_func3(sa, "not_like", "algebra", "not_like", *t, *t, *t, BIT, SCALE_NONE);
 		sql_create_func(sa, "not_ilike", "algebra", "not_ilike", *t, *t, BIT, SCALE_NONE);
 		sql_create_func3(sa, "not_ilike", "algebra", "not_ilike", *t, *t, *t, BIT, SCALE_NONE);
+		
 
 		sql_create_func(sa, "patindex", "pcre", "patindex", *t, *t, INT, SCALE_NONE);
 		sql_create_func(sa, "truncate", "str", "stringleft", *t, INT, *t, SCALE_NONE);
@@ -1788,6 +1789,8 @@ sqltypeinit( sql_allocator *sa)
 				create_arg(sa, NULL, sql_create_subtype(sa, INT, 0, 0), ARG_IN)), 
 				create_arg(sa, NULL, sql_create_subtype(sa, INT, 0, 0), ARG_IN)), 
 				sres, FALSE, F_FUNC, SCALE_FIX);
+		sql_create_func(sa, "match", "pcre", "match", *t, *t, BIT, SCALE_NONE);
+		sql_create_func(sa, "imatch", "pcre", "imatch", *t, *t, BIT, SCALE_NONE);
 	}
 	sres = create_arg(sa, NULL, sql_create_subtype(sa, TABLE, 0, 0), ARG_OUT); 
 	/* copyfrom fname (arg 11) */
