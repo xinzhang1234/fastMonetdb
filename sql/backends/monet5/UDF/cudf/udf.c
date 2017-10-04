@@ -10,6 +10,13 @@
 #include "monetdb_config.h"
 #include "udf.h"
 
+
+str UDFtest(dbl *ret,dbl *_p1,dbl *_p2)
+{
+    *ret = *_p1+*_p2;
+    return MAL_SUCCEED;
+}
+
 /* Reverse a string */
 
 /* actual implementation */
@@ -42,8 +49,11 @@ UDFreverse_(char **ret, const char *src)
 
 	/* copy characters from src to dst in reverse order */
 	dst[len] = 0;
-	while (len > 0)
-		*dst++ = src[--len];
+	while (len > 0) {
+		*dst++ = 'x';
+		len--;
+	}
+		//*dst++ = src[--len];
 
 	return MAL_SUCCEED;
 }
@@ -51,6 +61,16 @@ UDFreverse_(char **ret, const char *src)
 /* MAL wrapper */
 char *
 UDFreverse(char **ret, const char **arg)
+{
+	/* assert calling sanity */
+	assert(ret != NULL && arg != NULL);
+
+	return UDFreverse_ ( ret, *arg );
+}
+
+
+char *
+UDFreverse1(char **ret, const char **arg)
 {
 	/* assert calling sanity */
 	assert(ret != NULL && arg != NULL);
@@ -154,6 +174,7 @@ UDFBATreverse(bat *ret, const bat *arg)
 
 	return msg;
 }
+
 
 
 

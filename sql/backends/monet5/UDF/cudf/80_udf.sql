@@ -6,11 +6,16 @@
 
 -- add function signatures to SQL catalog
 
+create function calc_test(one double,two double)
+returns double external name udf.calc_test;
 
 -- Reverse a string
 create function reverse(src string)
 returns string external name udf.reverse;
 
+-- Reverse a string
+create function reverse1(src string)
+returns string external name udf.reverse1;
 
 -- fuse two (1-byte) tinyint values into one (2-byte) smallint value
 create function fuse(one tinyint, two tinyint)

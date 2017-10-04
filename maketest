@@ -1,0 +1,2 @@
+libtool --mode=compile --tag=CC gcc -c `env PKG_CONFIG_PATH=$INSTALL_DIR/lib/pkgconfig pkg-config --cflags monetdb-mapi` test.c 
+libtool --mode=link --tag=CC gcc -o test `env PKG_CONFIG_PATH=$INSTALL_DIR/lib/pkgconfig pkg-config --libs monetdb-mapi` test.o 
