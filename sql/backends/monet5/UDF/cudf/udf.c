@@ -9,6 +9,11 @@
 /* monetdb_config.h must be the first include in each .c file */
 #include "monetdb_config.h"
 #include "udf.h"
+#include <pcre.h>
+#define OVECCOUNT 30
+#define WORCOUNT 100
+#define EBUFLEN 128 
+#define BUFLEN 1024 
 
 
 str UDFtest(dbl *ret,dbl *_p1,dbl *_p2)
@@ -78,6 +83,64 @@ UDFreverse1(char **ret, const char **arg)
 	return UDFreverse_ ( ret, *arg );
 }
 
+char *
+UDFregex_(int *ret, const char *pattern, const char *src, int dfa)
+{
+	//printf("pattern is %s, string is %s\n", pattern, src);
+	pcre  *re = NULL;
+	const char *error; 
+	int  erroffset; 
+	int  ovector[OVECCOUNT]; 
+	int  workspace[WORCOUNT];
+	int  rc = -1; 
+	re = pcre_compile(pattern, 0, &error, &erroffset, NULL); 
+
+	if (re == NULL)
+	{
+		//printf("PCRE compilation failed at offset %d: %s\n", erroffset, error); 
+		throw(MAL, "udf.regex", "PCRE compilation failed");
+	}
+
+	if (dfa == 0)
+		rc = pcre_exec(re, NULL, src, strlen(src), 0, 0, ovector, OVECCOUNT);
+	else 
+	{
+    		int  workspace[WORCOUNT];
+		rc = pcre_dfa_exec(re, NULL, src, strlen(src), 0, PCRE_DFA_SHORTEST, ovector, OVECCOUNT, workspace, WORCOUNT);
+	}
+	if (rc < 0) 
+	{
+		if (rc == PCRE_ERROR_NOMATCH)
+			*ret = 0;
+		else 
+		{
+			pcre_free(re);
+			//throw(MAL, "udf.regex", "match pattern is error");
+		} 
+	}
+	else
+		*ret = 1;
+
+	return MAL_SUCCEED;
+}
+
+
+char *
+UDFregex(int *ret, const char **pattern, const char **src)
+{
+	/* assert calling sanity */
+	assert(ret != NULL && pattern != NULL && src != NULL);
+	return UDFregex_(ret, *pattern, *src, 0);
+}
+
+
+char *
+UDFdfaregex(int *ret, const char **pattern, const char **src)
+{
+	/* assert calling sanity */
+	assert(ret != NULL && pattern != NULL && src != NULL);
+	return UDFregex_(ret, *pattern, *src, 1);
+}
 
 /* Reverse a BAT of strings */
 /*

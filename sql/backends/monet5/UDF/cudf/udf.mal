@@ -9,6 +9,16 @@ command calc_test(one:dbl,two:dbl):dbl
 address UDFtest
 comment "udf floating point test";
 
+module udf;
+command regex(pattern:str, src:str):int
+address UDFregex
+comment "regex function";
+
+module udf;
+command dfaregex(pattern:str, src:str):int
+address UDFdfaregex
+comment "dfa regex function";
+
 # scalar MAL signatures
 module udf;
 

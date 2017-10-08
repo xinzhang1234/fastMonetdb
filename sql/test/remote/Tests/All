@@ -1,2 +1,0 @@
-HAVE_PYMONETDB?ssbm
-THREADS>=2?partition_elim

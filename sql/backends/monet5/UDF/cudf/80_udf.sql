@@ -9,6 +9,12 @@
 create function calc_test(one double,two double)
 returns double external name udf.calc_test;
 
+create function regex(pattern string, src string)
+returns int external name udf.regex;
+
+create function dfaregex(pattern string, src string)
+returns int external name udf.dfaregex;
+
 -- Reverse a string
 create function reverse(src string)
 returns string external name udf.reverse;
